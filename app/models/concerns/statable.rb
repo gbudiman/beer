@@ -23,7 +23,7 @@ module Concerns
     end
 
     def linear_calc(x)
-      x * 10
+      [0, x].max * 10
     end
   end
 end

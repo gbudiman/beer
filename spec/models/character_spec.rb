@@ -2,6 +2,14 @@
 
 RSpec.describe Character, type: :model do
   describe '#compute_skill_xp' do
+    describe 'negative skill_ids' do
+      let(:char) { build(:character, skill_ids: [-51]) }
+      it { expect(char.compute_skill_xp).to eq(0) }
+    end
+    describe 'non-existant skill_ids' do
+      let(:char) { build(:character, skill_ids: [3420]) }
+      it { expect(char.compute_skill_xp).to eq(0) }
+    end
     describe 'no skill' do
       let(:char) { build(:character) }
       it { expect(char.compute_skill_xp).to eq(0) }
@@ -76,6 +84,16 @@ RSpec.describe Character, type: :model do
   end
 
   describe '#compute_stat_xp' do
+    describe 'negative decicalc' do
+      let(:char) { build(:character, body: -2) }
+      it { expect(char.compute_stat_xp).to eq(0) }
+    end
+
+     describe 'negative linearcalc' do
+      let(:char) { build(:character, resolve: -2) }
+      it { expect(char.compute_stat_xp).to eq(0) }
+    end
+
     describe 'baby character' do
       let(:char) { build(:character) }
       it { expect(char.compute_stat_xp).to eq(0) }

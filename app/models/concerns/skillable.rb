@@ -139,7 +139,7 @@ module Concerns
 
     def compute_skill_xp
       Hash[*skill_ids
-        .map { |id| skills[id] } # obtain only acquired skills
+        .map { |id| skills[id] }.compact # obtain only acquired skills
         .map { |x| Hash[x[:category], x[:tier]] } # split by category and tier
         .group_by { |x| x.keys.first } # group by category
         .map { |k, v| Hash[k, v.map { |x| x.values.first }] } # split the tier in each category
