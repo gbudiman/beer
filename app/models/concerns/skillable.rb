@@ -134,7 +134,7 @@ module Concerns
 
     def validates_dependencies
       skill_ids.map { |id| skills[id] }.map { |x| x[:dep] }.compact
-        .map { |dep| skill_ids.include?(dep) ? nil : errors.add(:base, "#{dep} depends on #{skills[dep][:dep]}") }
+        .map { |dep| skill_ids.include?(dep) ? nil : errors.add(:base, "Missing dependency: #{dep}") }
     end
 
     def compute_skill_xp
