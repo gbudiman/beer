@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Concerns
   module Skillable
     extend ActiveSupport::Concern
@@ -126,7 +128,7 @@ module Concerns
         119 => { category: :anomaly, tier: 3, dep: 109 },
         100 => { category: :anomaly, tier: 1 },
         110 => { category: :anomaly, tier: 2, dep: 100 },
-        120 => { category: :anomaly, tier: 3, dep: 110 },
+        120 => { category: :anomaly, tier: 3, dep: 110 }
       }
     end
 
@@ -135,7 +137,7 @@ module Concerns
         .map { |id| skills[id] }
         .map { |x| x[:dep] }
         .compact
-        .map do |dep| 
+        .map do |dep|
           skill_ids.include?(dep) ? nil : errors.add(:base, "Skill #{dep} depends on #{skills[dep][:dep]}")
         end
     end
@@ -143,12 +145,12 @@ module Concerns
     def compute_skill_xp
       Hash[
         *skill_ids
-          .map { |id| skills[id] } # obtain only acquired skills
-          .map { |x| Hash[x[:category], x[:tier]] } # split by category and tier
-          .group_by { |x| x.keys.first } # group by category
-          .map { |k, v| Hash[k, v.map { |x| x.values.first }] } # split the tier in each category
-          .map { |x| Hash[x.keys.first, x.values.first.group_by { |d| d }] } # group the tier in each category
-          .map { |x| x.map { |k, v| [k, v.map { |l, w| Hash[l, w.count] } ] } }.flatten(2) # count the tier in each category
+        .map { |id| skills[id] } # obtain only acquired skills
+        .map { |x| Hash[x[:category], x[:tier]] } # split by category and tier
+        .group_by { |x| x.keys.first } # group by category
+        .map { |k, v| Hash[k, v.map { |x| x.values.first }] } # split the tier in each category
+        .map { |x| Hash[x.keys.first, x.values.first.group_by { |d| d }] } # group the tier in each category
+        .map { |x| x.map { |k, v| [k, v.map { |l, w| Hash[l, w.count] }] } }.flatten(2) # count the tier in each category
       ].values.flatten.map { |x| x.map { |t, c| arithmetic_sum(t, c) } }.flatten.reduce(0) { |a, b| a + b } # tally and sum
     end
 
@@ -157,5 +159,3 @@ module Concerns
     end
   end
 end
-
-# y.map{ |k,v| [k, v.map { |x| x.map { |t, c| Hash[t, arithmetic_sum(t, c)] } } ] }
