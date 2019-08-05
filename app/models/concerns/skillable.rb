@@ -133,18 +133,12 @@ module Concerns
     end
 
     def validates_dependencies
-      skill_ids
-        .map { |id| skills[id] }
-        .map { |x| x[:dep] }
-        .compact
-        .map do |dep|
-          skill_ids.include?(dep) ? nil : errors.add(:base, "Skill #{dep} depends on #{skills[dep][:dep]}")
-        end
+      skill_ids.map { |id| skills[id] }.map { |x| x[:dep] }.compact
+        .map { |dep| skill_ids.include?(dep) ? nil : errors.add(:base, "#{dep} depends on #{skills[dep][:dep]}") }
     end
 
     def compute_skill_xp
-      Hash[
-        *skill_ids
+      Hash[*skill_ids
         .map { |id| skills[id] } # obtain only acquired skills
         .map { |x| Hash[x[:category], x[:tier]] } # split by category and tier
         .group_by { |x| x.keys.first } # group by category
