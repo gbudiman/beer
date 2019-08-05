@@ -40,4 +40,36 @@ RSpec.describe Character, type: :model do
       # total = 27 + 2 + 2 + 6 = 37
     end
   end
+
+  describe '#validates_dependencies' do
+    before { char.validates_dependencies }
+    describe 'no skill' do
+      let(:char) { build(:character) }
+      it { expect(char.errors.messages.length).to eq(0) }
+    end
+    describe 'single skill' do
+      let(:char) { build(:character, skill_ids: [31]) }
+      it { expect(char.errors.messages.length).to eq(0) }
+    end
+    describe 'missing T1' do
+      let(:char) { build(:character, skill_ids: [45]) }
+      it { expect(char.errors.messages.length).to eq(1) }
+    end
+    describe 'missing T2' do
+      let(:char) { build(:character, skill_ids: [91, 111]) }
+      it { expect(char.errors.messages.length).to eq(1) }
+    end
+    describe 'included T1->3' do
+      let(:char) { build(:character, skill_ids: [91, 101, 111]) }
+      it { expect(char.errors.messages.length).to eq(0) }
+    end
+    describe 'innate T2' do
+      let(:char) { build(:character, skill_ids: [43]) }
+      it { expect(char.errors.messages.length).to eq(0) }
+    end
+    describe 'innate T2 but missing T2' do
+      let(:char) { build(:character, skill_ids: [53]) }
+      it { expect(char.errors.messages.length).to eq(1) }
+    end
+  end
 end
