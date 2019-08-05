@@ -18,6 +18,10 @@ RSpec.describe Character, type: :model do
       let(:char) { build(:character, skill_ids: [67]) }
       it { expect(char.compute_skill_xp).to eq(2) }
     end
+    describe 'single repeated skill' do
+      let(:char) { build(:character, skill_ids: [67,67,67,67,67]) }
+      it { expect(char.compute_skill_xp).to eq(2) }
+    end
     describe 'single category dual tier' do
       let(:char) { build(:character, skill_ids: [91, 101]) }
 

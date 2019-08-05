@@ -138,7 +138,7 @@ module Concerns
     end
 
     def compute_skill_xp
-      Hash[*skill_ids
+      Hash[*skill_ids.uniq
         .map { |id| skills[id] }.compact # obtain only acquired skills
         .map { |x| Hash[x[:category], x[:tier]] } # split by category and tier
         .group_by { |x| x.keys.first } # group by category
