@@ -137,6 +137,11 @@ module Concerns
         .map { |dep| skill_ids.include?(dep) ? nil : errors.add(:base, "Missing dependency: #{dep}") }
     end
 
+    def validates_boundaries
+      y = skill_ids.uniq.map { |id| skills[id] }.compact.map { |x| x[:tier] }.uniq
+      ap y
+    end
+
     def compute_skill_xp
       Hash[*skill_ids.uniq
         .map { |id| skills[id] }.compact # obtain only acquired skills

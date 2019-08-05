@@ -87,6 +87,14 @@ RSpec.describe Character, type: :model do
     end
   end
 
+  describe '#validates_boundaries' do
+    before { char.validates_boundaries }
+    describe 'no skill' do
+      let(:char) { build(:character, skill_ids: [91, 101, 111]) }
+      it { expect(char.errors.messages.length).to eq(0) }
+    end
+  end
+
   describe '#compute_stat_xp' do
     describe 'negative decicalc' do
       let(:char) { build(:character, body: -2) }
