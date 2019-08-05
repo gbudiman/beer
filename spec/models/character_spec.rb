@@ -74,4 +74,71 @@ RSpec.describe Character, type: :model do
       it { expect(char.errors.messages.length).to eq(1) }
     end
   end
+
+  describe '#compute_stat_xp' do
+    describe 'baby character' do
+      let(:char) { build(:character) }
+      it { expect(char.compute_stat_xp).to eq(0) }
+    end
+
+    describe 'decicalc < 10' do
+      let(:char) { build(:character, body: 7) }
+      it { expect(char.compute_stat_xp).to eq(7) }
+    end
+
+    describe 'decicalc == 10' do
+      let(:char) { build(:character, body: 10) }
+      it { expect(char.compute_stat_xp).to eq(10) }
+    end
+
+    describe 'decicalc == 15' do
+      let(:char) { build(:character, body: 15) }
+      it { expect(char.compute_stat_xp).to eq(25) }
+      # 10 + 15 = 25
+    end
+
+    describe 'decicalc == 40' do
+      let(:char) { build(:character, body: 40) }
+      it { expect(char.compute_stat_xp).to eq(160) }
+      # 10 + 30 + 50 + 70 = 160
+    end
+
+    describe 'decicalc == 53' do
+      let(:char) { build(:character, body: 53) }
+      it { expect(char.compute_stat_xp).to eq(280) }
+      # 10 + 30 + 50 + 70 + 90 + (3 * 10) = 280
+    end
+
+    describe 'decicalc == 70' do
+      let(:char) { build(:character, body: 70) }
+      it { expect(char.compute_stat_xp).to eq(450) }
+      # 10 + 30 + 50 + 70 + 90 + (20 * 10) = 450
+    end
+
+    describe 'decicalc == 77' do
+      let(:char) { build(:character, body: 77) }
+      it { expect(char.compute_stat_xp).to eq(520) }
+      # 10 + 30 + 50 + 70 + 90 + (27 * 10) = 520
+    end
+
+    describe 'hp and mp each 77' do
+      let(:char) { build(:character, body: 77, mind: 77) }
+      it { expect(char.compute_stat_xp).to eq(1040) }
+    end
+
+    describe 'resolve == 5' do
+      let(:char) { build(:character, resolve: 5) }
+      it { expect(char.compute_stat_xp).to eq(50) }
+    end
+
+    describe 'infection == 2' do
+      let(:char) { build(:character, infection: 2) }
+      it { expect(char.compute_stat_xp).to eq(20) }
+    end
+
+    describe 'BRIM = 77, 5, 2, 77' do
+      let(:char) { build(:character, body: 77, mind: 77, resolve: 5, infection: 2) }
+      it { expect(char.compute_stat_xp).to eq(1110) }
+    end
+  end
 end
