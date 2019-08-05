@@ -133,7 +133,7 @@ module Concerns
     end
 
     def validates_dependencies
-      skill_ids.map { |id| skills[id] }.map { |x| x[:dep] }.compact
+      skill_ids.map { |id| skills[id] }.compact.map { |x| x[:dep] }.compact
         .map { |dep| skill_ids.include?(dep) ? nil : errors.add(:base, "Missing dependency: #{dep}") }
     end
 

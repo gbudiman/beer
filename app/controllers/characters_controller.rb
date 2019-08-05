@@ -1,7 +1,7 @@
 class CharactersController < ApplicationController
   def xp
     char = Character.new(
-      skill_ids: params[:skill_ids] || [],
+      skill_ids: Array.wrap(params[:skill_ids]),
       body: params[:body] || 0,
       mind: params[:mind] || 0,
       resolve: params[:resolve] || 0,
