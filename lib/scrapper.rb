@@ -26,7 +26,7 @@ class Scrapper
       'branches',
       %w[id name short_name],
       page
-    ).map { |x| Branch.upsert!(x) }
+    ).each { |x| Branch.upsert!(x) }
   end
 
   def locations(page = nil)
@@ -34,7 +34,7 @@ class Scrapper
       'locations',
       %w[id name branch_id state address],
       page
-    ).map { |x| Location.upsert!(x) }
+    ).each { |x| Location.upsert!(x) }
   end
 
   def events(page = nil)
@@ -42,7 +42,7 @@ class Scrapper
       'events',
       %w[id name branch_id start_date end_date location_id],
       page
-    ).map { |x| Event.upsert!(x) }
+    ).each { |x| Event.upsert!(x) }
   end
 
   def url_for(action, page: 1)

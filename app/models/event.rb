@@ -1,23 +1,39 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
+  include Concerns::Upsertable
+
   belongs_to :branch
   belongs_to :location
 
-  def self.upsert!(blob)
-    Event.find_or_initialize_by(id: blob['id']).tap do |event|
-      event.id = blob['id']
-      event.name = blob['name'].strip
-      event.location_id = blob['location_id']
-      event.branch_id = blob['branch_id']
-      event.start = Time.parse(blob['start_date'])
-      event.end = Time.parse(blob['end_date'])
-    end.save!
-  rescue ActiveRecord::RecordNotUnique
-    # nop
-  rescue ActiveRecord::RecordInvalid
-    # nop
-  end
+  upsert location_id: :location_id, branch_id: :branch_id, start_date: :start, end_date: :end
+  blacklist(
+    # GA
+    11,
+    16,
+    # IN
+    31,
+    # MA
+    17,
+    # NJ
+    28,
+    29,
+    # NM
+    13,
+    14,
+    # OK
+    32,
+    # OR:
+    18,
+    19,
+    20,
+    22,
+    23,
+    24,
+    25,
+    # TX
+    30,
+  )
 
   def self.filter(params)
     event = Event.arel_table
@@ -33,6 +49,6 @@ class Event < ApplicationRecord
       scope = scope.where(event[:start].lt(Time.parse(params[:before])))
     end
 
-    scope
+    scope.order(start: :desc)
   end
 end

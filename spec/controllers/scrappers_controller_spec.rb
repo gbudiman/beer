@@ -61,7 +61,7 @@ RSpec.describe ScrappersController, type: :controller do
 
     it 'scraps and saves' do
       scrap!
-      expect(Event.count).to eq(12)
+      expect(Event.count).to eq(7)
     end
   end
 end
