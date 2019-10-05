@@ -12,7 +12,9 @@ module Concerns
       AS: 4,
       AZ: 5,
       AR: 6,
-      NORCAL: 7,
+      CA: 7,
+      SOCAL: 7,
+      NOCA: 7,
       CO: 8,
       CT: 9,
       DE: 10,
@@ -78,8 +80,7 @@ module Concerns
       PE: 70,
       QC: 71,
       SK: 72,
-      YT: 73,
-      SOCAL: 74
+      YT: 73,  
     }.with_indifferent_access
   end
 end

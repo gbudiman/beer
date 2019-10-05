@@ -15,12 +15,17 @@ RSpec.describe Branch, type: :model do
   context 'with specified state' do
     let(:branch) { build(:branch, state: state) }
 
-    %w[MA NM SOCAL NORCAL NATIONAL].each do |region|
-      context "with #{region}" do
-        let(:state) { region }
-        it "creates branch with state #{region}" do
+    [['MA'],
+      ['NM'],
+      ['SOCAL', 'CA'], 
+      ['NOCA', 'CA'], 
+      ['NATIONAL']
+    ].each do |region|
+      context "with #{region[0]}" do
+        let(:state) { region[0] }
+        it "creates branch with state #{region[1] || region[0]}" do
           branch.save!
-          expect(branch.state).to eq(region)
+          expect(branch.state).to eq(region[1] || region[0])
         end
       end
     end

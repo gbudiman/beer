@@ -8,5 +8,11 @@ Rails.application.routes.draw do
         post :xp
       end
     end
+
+    scope :scrap, controller: :scrappers do
+      post :locations
+      post :branches
+      post :events
+    end
   end
 end
