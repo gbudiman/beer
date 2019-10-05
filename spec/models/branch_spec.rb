@@ -16,11 +16,10 @@ RSpec.describe Branch, type: :model do
     let(:branch) { build(:branch, state: state) }
 
     [['MA'],
-      ['NM'],
-      ['SOCAL', 'CA'], 
-      ['NOCA', 'CA'], 
-      ['NATIONAL']
-    ].each do |region|
+     ['NM'],
+     %w[SOCAL CA],
+     %w[NOCA CA],
+     ['NATIONAL']].each do |region|
       context "with #{region[0]}" do
         let(:state) { region[0] }
         it "creates branch with state #{region[1] || region[0]}" do

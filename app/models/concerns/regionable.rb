@@ -7,6 +7,7 @@ module Concerns
     REGIONS = {
       UNSPECIFIED: 0,
       NATIONAL: 1,
+      NA: 1,
       AL: 2,
       AK: 3,
       AS: 4,
@@ -21,6 +22,7 @@ module Concerns
       DC: 11,
       FL: 12,
       GA: 13,
+      ATL: 13,
       GU: 14,
       HI: 15,
       ID: 16,
@@ -77,10 +79,11 @@ module Concerns
       NS: 67,
       NU: 68,
       ON: 69,
+      TO: 69,
       PE: 70,
       QC: 71,
       SK: 72,
-      YT: 73,  
+      YT: 73
     }.with_indifferent_access
   end
 end
