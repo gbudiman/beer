@@ -14,5 +14,7 @@ Rails.application.routes.draw do
       post :branches
       post :events
     end
+
+    resources :events, only: [:index]
   end
 end

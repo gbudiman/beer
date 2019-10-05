@@ -15,16 +15,34 @@ class Scrapper
     @headers = { Authorization: "Bearer #{access_token}" }
   end
 
-  def locations(filters:, page:)
-    paginate('locations', filters, page)
+  def run_all!
+    branches
+    locations
+    events
   end
 
-  def branches(filters:, page:)
-    paginate('branches', filters, page)
+  def branches(page = nil)
+    paginate(
+      'branches',
+      %w[id name short_name],
+      page
+    ).map { |x| Branch.upsert!(x) }
   end
 
-  def events(filters:, page:)
-    paginate('events', filters, page)
+  def locations(page = nil)
+    paginate(
+      'locations',
+      %w[id name branch_id state address],
+      page
+    ).map { |x| Location.upsert!(x) }
+  end
+
+  def events(page = nil)
+    paginate(
+      'events',
+      %w[id name branch_id start_date end_date location_id],
+      page
+    ).map { |x| Event.upsert!(x) }
   end
 
   def url_for(action, page: 1)

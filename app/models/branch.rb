@@ -11,8 +11,8 @@ class Branch < ApplicationRecord
   def self.upsert!(blob)
     Branch.find_or_initialize_by(id: blob['id']).tap do |branch|
       branch.id = blob['id']
-      branch.state = blob['short_name'].upcase
-      branch.name = blob['name']
+      branch.state = blob['short_name'].strip.upcase
+      branch.name = blob['name'].strip
     end.save!
   end
 end

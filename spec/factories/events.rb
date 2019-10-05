@@ -2,5 +2,9 @@
 
 FactoryBot.define do
   factory :event do
+    branch
+    location
+    start {}
+    name { Faker::Company.name }
   end
 end
