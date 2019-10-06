@@ -35,5 +35,12 @@ module Beer
     config.api_only = true
 
     config.eager_load_paths << Rails.root.join('lib')
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get]
+      end
+    end
   end
 end
