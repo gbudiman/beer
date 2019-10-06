@@ -7,7 +7,7 @@ class EventsController < ApplicationController
              location: { only: %i[name address] },
              branch: { only: :name }
            },
-           except: %i[created_at updated_at branch_id location_id end]
+           except: %i[created_at updated_at location_id end]
   end
 
   private
