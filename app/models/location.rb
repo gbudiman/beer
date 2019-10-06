@@ -12,7 +12,7 @@ class Location < ApplicationRecord
   upsert state: :state, address: :address do |blob|
     BranchLocation.find_or_create_by!(
       branch_id: blob['branch_id'],
-      location_id: blob['id'],
+      location_id: blob['id']
     )
   end
 end

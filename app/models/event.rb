@@ -32,23 +32,21 @@ class Event < ApplicationRecord
     24,
     25,
     # TX
-    30,
+    30
   )
 
+  scope :after, ->(date) { where('start > :t', t: date) }
+  scope :before, ->(date) { where('start < :t', t: date) }
+  scope :branches, ->(branches) { joins(:branch).where('branches.name' => branches) }
+
   def self.filter(params)
-    event = Event.arel_table
-
-    scope = Event.all
-    if params['branches'].present?
-      scope = scope.joins(:branch).where('branches.name' => params[:branches])
-    end
-    if params[:after].present?
-      scope = scope.where(event[:start].gt(Time.parse(params[:after])))
-    end
+    query = Event.all.order(start: :desc)
+    query = query.after(Time.parse(params[:after])) if params[:after].present?
     if params[:before].present?
-      scope = scope.where(event[:start].lt(Time.parse(params[:before])))
+      query = query.before(Time.parse(params[:before]))
     end
+    query = query.branches(params[:branches]) if params[:branches].present?
 
-    scope.order(start: :desc)
+    query
   end
 end

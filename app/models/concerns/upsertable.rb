@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Concerns
   module Upsertable
     extend ActiveSupport::Concern
@@ -14,17 +16,17 @@ module Concerns
         return if blacklisted_ids.present? && blacklisted_ids[id]
 
         begin
-          self.name.constantize.find_or_initialize_by(id: blob['id']).tap do |entity|
+          name.constantize.find_or_initialize_by(id: blob['id']).tap do |entity|
             upsertable_columns.each do |remote, local|
               entity.send("#{local}=", typecast(
-                remote: remote,
-                local: local,
-                value: blob[remote.to_s]
-              ))
+                                         remote: remote,
+                                         local: local,
+                                         value: blob[remote.to_s]
+                                       ))
             end
           end.save!
 
-          #byebug if self.name == 'Location'
+          # byebug if self.name == 'Location'
           after_upsert.call(blob) if after_upsert.present?
         rescue ActiveRecord::RecordNotUnique
           # nop
@@ -36,7 +38,7 @@ module Concerns
       end
 
       def upsert(columns, &block)
-        self.upsertable_columns = columns.merge({ id: :id, name: :name })
+        self.upsertable_columns = columns.merge(id: :id, name: :name)
         self.after_upsert = block
       end
 
