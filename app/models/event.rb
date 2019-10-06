@@ -8,6 +8,8 @@ class Event < ApplicationRecord
 
   upsert location_id: :location_id, branch_id: :branch_id, start_date: :start, end_date: :end
   blacklist(
+    # CO
+    42,
     # GA
     11,
     16,
@@ -21,6 +23,12 @@ class Event < ApplicationRecord
     # NM
     13,
     14,
+    # OH
+    50,
+    51,
+    52,
+    53,
+    54,
     # OK
     32,
     # OR:
@@ -31,8 +39,10 @@ class Event < ApplicationRecord
     23,
     24,
     25,
+    44,
     # TX
-    30
+    30,
+    38,
   )
 
   scope :after, ->(date) { where('start > :t', t: date) }
