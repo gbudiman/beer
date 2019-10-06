@@ -19,7 +19,7 @@ RSpec.describe Character, type: :model do
       it { expect(char.compute_skill_xp).to eq(2) }
     end
     describe 'single repeated skill' do
-      let(:char) { build(:character, skill_ids: [67,67,67,67,67]) }
+      let(:char) { build(:character, skill_ids: [67, 67, 67, 67, 67]) }
       it { expect(char.compute_skill_xp).to eq(2) }
     end
     describe 'single category dual tier' do
@@ -93,7 +93,7 @@ RSpec.describe Character, type: :model do
       it { expect(char.compute_stat_xp).to eq(0) }
     end
 
-     describe 'negative linearcalc' do
+    describe 'negative linearcalc' do
       let(:char) { build(:character, resolve: -2) }
       it { expect(char.compute_stat_xp).to eq(0) }
     end

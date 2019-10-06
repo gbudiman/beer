@@ -134,17 +134,17 @@ module Concerns
 
     def validates_dependencies
       skill_ids.map { |id| skills[id] }.compact.map { |x| x[:dep] }.compact
-        .map { |dep| skill_ids.include?(dep) ? nil : errors.add(:base, "Missing dependency: #{dep}") }
+               .map { |dep| skill_ids.include?(dep) ? nil : errors.add(:base, "Missing dependency: #{dep}") }
     end
 
     def compute_skill_xp
       Hash[*skill_ids.uniq
-        .map { |id| skills[id] }.compact # obtain only acquired skills
-        .map { |x| Hash[x[:category], x[:tier]] } # split by category and tier
-        .group_by { |x| x.keys.first } # group by category
-        .map { |k, v| Hash[k, v.map { |x| x.values.first }] } # split the tier in each category
-        .map { |x| Hash[x.keys.first, x.values.first.group_by { |d| d }] } # group the tier in each category
-        .map { |x| x.map { |k, v| [k, v.map { |l, w| Hash[l, w.count] }] } }.flatten(2) # count the tier in each category
+                     .map { |id| skills[id] }.compact # obtain only acquired skills
+                     .map { |x| Hash[x[:category], x[:tier]] } # split by category and tier
+                     .group_by { |x| x.keys.first } # group by category
+                     .map { |k, v| Hash[k, v.map { |x| x.values.first }] } # split the tier in each category
+                     .map { |x| Hash[x.keys.first, x.values.first.group_by { |d| d }] } # group the tier in each category
+                     .map { |x| x.map { |k, v| [k, v.map { |l, w| Hash[l, w.count] }] } }.flatten(2) # count the tier in each category
       ].values.flatten.map { |x| x.map { |t, c| arithmetic_sum(t, c) } }.flatten.reduce(0) { |a, b| a + b } # tally and sum
     end
 

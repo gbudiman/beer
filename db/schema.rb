@@ -12,9 +12,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_805_005_150) do
+ActiveRecord::Schema.define(version: 20_191_005_015_922) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
+
+  create_table 'branch_locations', force: :cascade do |t|
+    t.bigint 'branch_id'
+    t.bigint 'location_id'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index %w[branch_id location_id], name: 'index_branch_locations_on_branch_id_and_location_id', unique: true
+    t.index ['branch_id'], name: 'index_branch_locations_on_branch_id'
+    t.index ['location_id'], name: 'index_branch_locations_on_location_id'
+  end
+
+  create_table 'branches', force: :cascade do |t|
+    t.integer 'state', default: 0, null: false
+    t.string 'name', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index %w[state name], name: 'index_branches_on_state_and_name', unique: true
+  end
 
   create_table 'characters', force: :cascade do |t|
     t.bigint 'player_id'
@@ -34,6 +52,29 @@ ActiveRecord::Schema.define(version: 20_190_805_005_150) do
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
     t.index ['player_id'], name: 'index_characters_on_player_id'
+  end
+
+  create_table 'events', force: :cascade do |t|
+    t.datetime 'start', null: false
+    t.datetime 'end', null: false
+    t.string 'name', null: false
+    t.bigint 'branch_id'
+    t.bigint 'location_id'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index %w[branch_id location_id start], name: 'index_events_on_branch_id_and_location_id_and_start', unique: true
+    t.index ['branch_id'], name: 'index_events_on_branch_id'
+    t.index ['location_id'], name: 'index_events_on_location_id'
+    t.index ['start'], name: 'index_events_on_start'
+  end
+
+  create_table 'locations', force: :cascade do |t|
+    t.string 'name', null: false
+    t.integer 'state', default: 0, null: false
+    t.string 'address', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index %w[state address], name: 'index_locations_on_state_and_address', unique: true
   end
 
   create_table 'players', force: :cascade do |t|
