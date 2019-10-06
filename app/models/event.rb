@@ -4,10 +4,11 @@ class Event < ApplicationRecord
   include Concerns::Upsertable
 
   belongs_to :branch
-  belongs_to :location
+  belongs_to :location, optional: true
 
   upsert location_id: :location_id, branch_id: :branch_id, start_date: :start, end_date: :end
   blacklist(
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
     # CO
     42,
     # GA
@@ -42,7 +43,7 @@ class Event < ApplicationRecord
     44,
     # TX
     30,
-    38,
+    38
   )
 
   scope :after, ->(date) { where('start > :t', t: date) }

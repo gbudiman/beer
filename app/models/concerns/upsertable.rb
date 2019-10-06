@@ -26,11 +26,10 @@ module Concerns
             end
           end.save!
 
-          # byebug if self.name == 'Location'
           after_upsert.call(blob) if after_upsert.present?
-        rescue ActiveRecord::RecordNotUnique
+        rescue ActiveRecord::RecordNotUnique => e
           # nop
-        rescue ActiveRecord::RecordInvalid
+        rescue ActiveRecord::RecordInvalid => e
           # nop
         rescue ArgumentError
           # nop
