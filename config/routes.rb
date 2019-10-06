@@ -10,9 +10,13 @@ Rails.application.routes.draw do
     end
 
     scope :scrap, controller: :scrappers do
-      post :locations
       post :branches
       post :events
+      post :locations
+
+      get :branches
+      get :events
+      get :locations
     end
 
     resources :events, only: [:index]
