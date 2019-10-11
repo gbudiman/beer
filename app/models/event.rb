@@ -53,9 +53,7 @@ class Event < ApplicationRecord
   def self.filter(params)
     query = Event.all.order(start: :desc)
     query = query.after(Time.parse(params[:after])) if params[:after].present?
-    if params[:before].present?
-      query = query.before(Time.parse(params[:before]))
-    end
+    query = query.before(Time.parse(params[:before])) if params[:before].present?
     query = query.branches(params[:branches]) if params[:branches].present?
 
     query
